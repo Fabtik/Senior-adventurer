@@ -9,6 +9,7 @@ public class CharacterAnimation : MonoBehaviour
 
     void Start()
     {
+        Cursor.visible = false; // пока это будет туть
         anim = GetComponent<Animator>();
     }
 
