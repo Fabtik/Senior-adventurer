@@ -4,17 +4,47 @@ using UnityEngine;
 
 public class Pcontroller : MonoBehaviour
 {
-    float Ver, Hor, Jump;
+    float Ver;
+    public bool isGround, isGroundBorder;
+    public float Speed = 1f, JumpSpeed = 200f, TurnSpeed = 200f;
+    public HelthbarController helthbar;
 
-    bool isGround;
+   void OnCollisionEnter(Collision collision)
+   {
+        if(collision.gameObject.tag == "Enemy")
+        {
+            if (helthbar)
+            {
+                helthbar.OnTakeDamage(10);
+                var position =  transform.position - collision.gameObject.transform.position;
+                // GetComponent<Rigidbody>().AddForce(new Vector3(position.x, Mathf.Abs(position.y), position.z) * 10f, ForceMode.Impulse);
+                GetComponent<Rigidbody>().AddForce(new Vector3(position.x, 0.5f, position.z) * 10f, ForceMode.Impulse);
 
-    public float Speed = 10f, JumpSpeed = 200f, TurnSpeed = 200f;
+            }
+        }
+        if (collision.gameObject.tag == "Trap")
+        {
+            if (helthbar)
+            {
+                helthbar.OnTakeDamage(1000);
+                //var position = transform.position - collision.gameObject.transform.position;
+                //// GetComponent<Rigidbody>().AddForce(new Vector3(position.x, Mathf.Abs(position.y), position.z) * 10f, ForceMode.Impulse);
+                //GetComponent<Rigidbody>().AddForce(new Vector3(position.x, 0.5f, position.z) * 10f, ForceMode.Impulse);
+
+            }
+        }
+    }
+    
 
     void OnCollisionStay(Collision other)
     {
         if (other.gameObject.tag == "ground")
         {
             isGround = true;
+        }
+        if (other.gameObject.tag == "ground border")
+        {
+            isGroundBorder = true;
         }
     }
 
@@ -24,14 +54,34 @@ public class Pcontroller : MonoBehaviour
         {
             isGround = false;
         }
+        if (other.gameObject.tag == "ground border")
+        {
+            isGroundBorder = false;
+        }
     }
 
-    void Update()
+    void FixedUpdate()
     {
-
-        if (isGround)
+        if(helthbar.HP() > 0) { 
+        if (isGround && !isGroundBorder)
         {
-
+            if (Input.GetKey(KeyCode.A))
+            {
+                transform.Rotate(Vector3.up, -TurnSpeed * Time.deltaTime);
+            }
+            if (Input.GetKey(KeyCode.D))
+            {
+                transform.Rotate(Vector3.up, TurnSpeed * Time.deltaTime);
+            }
+            if (Input.GetKey(KeyCode.Space))
+            {
+                GetComponent<Rigidbody>().AddForce(new Vector3(0, 1, 0) * 2.5f, ForceMode.VelocityChange);
+            }
+            Ver = Input.GetAxis("Vertical") * Time.deltaTime * Speed;
+ 
+        }
+        /*else if (isGround && isGroundBorder)
+        {
             if (Input.GetKey(KeyCode.A))
             {
                 transform.Rotate(Vector3.up, -TurnSpeed * Time.deltaTime);
@@ -41,13 +91,21 @@ public class Pcontroller : MonoBehaviour
                 transform.Rotate(Vector3.up, TurnSpeed * Time.deltaTime);
             }
             Ver = Input.GetAxis("Vertical") * Time.deltaTime * Speed;
-           // Hor = Input.GetAxis("Horizontal") * Time.deltaTime * Speed;
-            Jump = Input.GetAxis("Jump") * Time.deltaTime * JumpSpeed;
-            GetComponent<Rigidbody>().AddForce(transform.up * Jump, ForceMode.Impulse);  
+            
         }
-        transform.Translate(new Vector3(0, 0, Ver));
-        //transform.Translate(new Vector3(Hor, 0, Ver));
+        */
+            if (Input.GetKey(KeyCode.A))
+            {
+                transform.Rotate(Vector3.up, -TurnSpeed * Time.deltaTime);
+            }
+            if (Input.GetKey(KeyCode.D))
+            {
+                transform.Rotate(Vector3.up, TurnSpeed * Time.deltaTime);
+            }
+            Ver = Input.GetAxis("Vertical") * Time.deltaTime * Speed;
+
+            transform.Translate(new Vector3(0, 0, Ver));
+        }
     }
 
 }
-
