@@ -32,7 +32,7 @@ public class StaminaController : MonoBehaviour
     {
         if (stamina <= 1)
         {
-            stamina += 0.005f;
+            stamina += 0.015f;
         }
         staminaBar.fillAmount = stamina / startStamina;
     }

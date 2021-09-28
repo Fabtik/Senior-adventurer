@@ -6,6 +6,10 @@ using UnityEngine.SceneManagement;
 
 public class FirstLocationLevels : MonoBehaviour
 {
+    public GameObject Levels;
+    public GameObject StartButton;
+    public GameObject ExitButton;
+
     public Button Level2;
     public Button Level3;
     public Button Level4;
@@ -101,6 +105,14 @@ public class FirstLocationLevels : MonoBehaviour
     public void LoadTo(int level)
     {
         SceneManager.LoadScene(level);
+        Cursor.visible = false;
+    }
+
+    public void Back()
+    {
+        Levels.SetActive(false);
+        StartButton.SetActive(true);
+        ExitButton.SetActive(true);
     }
 
     public void Reset()

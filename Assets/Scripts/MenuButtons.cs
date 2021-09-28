@@ -5,6 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class MenuButtons : MonoBehaviour
 {
+
+    public GameObject Levels;
+    public GameObject StartButton;
+    public GameObject ExitButton;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -20,7 +25,10 @@ public class MenuButtons : MonoBehaviour
     public void Play()
     {
         //Cursor.visible = false;
-        SceneManager.LoadScene(1);
+        //SceneManager.LoadScene(1);
+        Levels.SetActive(true);
+        StartButton.SetActive(false);
+        ExitButton.SetActive(false);
     }
 
     public void Quit()
